@@ -32,7 +32,7 @@ class Node:
 		elif p_refs is not None and cpt is not None:
 			binstr = ''
 			for p in p_refs:
-				binstr.append(str(p.getVal()))
+				binstr.append(str(p.getVal(reset_val = reset_val)))
 			index = int(binstr, 2) #convert it to binary
 			output = (1 if random.random() > cpt[index] else 0)
 		elif background is not None:
