@@ -12,9 +12,9 @@ class Node:
 			self.p_refs = p_refs
 			self.cpt = cpt
 			if abs(sum(cpt) - 1) > 0.01:
-				raise new ValueError("CPT must sum to 1")
+				raise ValueError("CPT must sum to 1")
 			if len(cpt) != 2**len(p_refs):
-				raise new ValueError("CPT must have length 2^len(p_refs)")
+				raise ValueError("CPT must have length 2^len(p_refs)")
 			self.background = None #to avoid modification of class variable instead of object's variable.
 		else:
 			if background is None:
@@ -25,19 +25,24 @@ class Node:
 
 	#returns 0 or 1. Note: should never return None. 
 	#if _val is None when this is called, the node will randomly generate a value based on its parents or, if it has none, its background probability. This is how rejection sampling should work. 
-	def getVal(self):
+	def getVal(self, reset_val = False):
+		output = None
 		if _val is not None:
-			return _val
-		else if p_refs is not None and cpt is not None:
+			output = _val
+		elif p_refs is not None and cpt is not None:
 			binstr = ''
 			for p in p_refs:
 				binstr.append(str(p.getVal()))
 			index = int(binstr, 2) #convert it to binary
-			return 1 if random.random() > cpt[index] else 0
-		else if background is not None:
-			return 1 if random.random() > background else 0
+			output = (1 if random.random() > cpt[index] else 0)
+		elif background is not None:
+			output = (1 if random.random() > background else 0)
 		else:
 			raise TypeError("Improperly initialized Node has no parents and no background probability. getVal function cannot continue")
+		
+		if reset_val: #the inference procedure cleans up after itself if you say reset_val = True
+			_val = None
+		return output
 
 	#takes None, 0, or 1. Returns nothing.
 	def setVal(self, newval):
