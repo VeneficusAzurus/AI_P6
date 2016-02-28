@@ -4,6 +4,7 @@ class Node:
 	_val = None #can be None, 0, or 1. Do not modify this directly, use the getter and setter.
 	background = None #should be None or a number between 0 and 1 inclusive
 	cpt = None #should be a list of numbers between 0 and 1 with the property that sum(cpt) = 1
+	_status = ""
 	#don't specify that both are none.
 	def __init__(self, background = None, p_refs = None, cpt = None):
 
@@ -22,6 +23,7 @@ class Node:
 			self.background = background
 			self.p_refs = None #to avoid modification of class variable instead of object's variable.
 			self.cpt = None
+		self._status = "-"
 
 	#returns 0 or 1. Note: should never return None. 
 	#if _val is None when this is called, the node will randomly generate a value based on its parents or, if it has none, its background probability. This is how rejection sampling should work. 
@@ -34,9 +36,9 @@ class Node:
 			for p in p_refs:
 				binstr.append(str(p.getVal(reset_val = reset_val)))
 			index = int(binstr, 2) #convert it to binary
-			output = (1 if random.random() > cpt[index] else 0)
+			output = (1 if random.random() >= cpt[index] else 0)
 		elif background is not None:
-			output = (1 if random.random() > background else 0)
+			output = (1 if random.random() >= background else 0)
 		else:
 			raise TypeError("Improperly initialized Node has no parents and no background probability. getVal function cannot continue")
 		
@@ -46,7 +48,15 @@ class Node:
 
 	#takes None, 0, or 1. Returns nothing.
 	def setVal(self, newval):
-		if newval is None or newval == 0 or newval == 1:
+		if newval in set({None, 0, 1}):
 			_val = newval
 		else:
 			raise ValueError("setVal function in Node can only take values None, 0, and 1, but was given {0}, a {1}".format(newval, type(newval)))
+
+	def setStatus(self, newstatus):
+		if newstatus in set({"t", "-", "f", "q"}):
+			self._status = newstatus
+		else:
+			raise ValueError('Set status given argument {0} not in {"t", "-", "f", "q"}'.format(newstatus))
+	def getStatus(self):
+		return self._status
