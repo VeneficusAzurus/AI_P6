@@ -5,8 +5,9 @@ class Node:
 	background = None #should be None or a number between 0 and 1 inclusive
 	cpt = None #should be a list of numbers between 0 and 1 with the property that sum(cpt) = 1
 	_status = ""
+	name = "" #a (hopefully unique) name for each node
 	#don't specify that both are none.
-	def __init__(self, background = None, p_refs = None, cpt = None):
+	def __init__(self, background = None, p_refs = None, cpt = None, name = ""):
 
 		#a node cannot both have a background probability and parent refs. Parent refs take precedence if both are given.
 		if p_refs is not None: #stupid workaround to prevent multiple objects from having the same dict
@@ -24,6 +25,7 @@ class Node:
 			self.p_refs = None #to avoid modification of class variable instead of object's variable.
 			self.cpt = None
 		self._status = "-"
+		self.name = name
 
 	#returns 0 or 1. Note: should never return None. 
 	#if _val is None when this is called, the node will randomly generate a value based on its parents or, if it has none, its background probability. This is how rejection sampling should work. 
