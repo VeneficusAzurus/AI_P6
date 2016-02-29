@@ -1,6 +1,6 @@
 import random
 class Node:
-	p_refs = None #should be None or a set or list of Node objects
+	p_refs = None #should be None or a list of Node objects (MUST NOT BE A SET)
 	_val = None #can be None, 0, or 1. Do not modify this directly, use the getter and setter.
 	background = None #should be None or a number between 0 and 1 inclusive
 	cpt = None #should be a list of numbers between 0 and 1 with the property that sum(cpt) = 1
