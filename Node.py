@@ -9,6 +9,8 @@ class Node:
 	x = {} #generate a random event
 	y = {} #generate a event that consistent with evidence
 	w = 1 #weight
+	tempVal = None #temp value used in event
+
 	#don't specify that both are none.
 	def __init__(self, background = None, p_refs = None, cpt = None, name = ""):
 
@@ -49,6 +51,7 @@ class Node:
 		
 		if reset_val: #the inference procedure cleans up after itself if you say reset_val = True
 			_val = None
+		tempVal = output
 		x.update({name: output})
 		return output
 
@@ -67,7 +70,7 @@ class Node:
 	def getStatus(self):
 		return self._status
 
-	def weight_Sample(self, reset_val = False):
+	def weight_update(self, reset_val = False):
 		output = None
 		if _val is not None:
 			output = _val
@@ -91,8 +94,25 @@ class Node:
 		
 		if reset_val: #the inference procedure cleans up after itself if you say reset_val = True
 			_val = None
+		
+		tempVal = output
 		y.update({self.name: output})
 		return output
 
 	def getWeight(self):
 		return self.w
+
+	def prior_sample(self):
+		x.clear()
+		self.getVal(true)
+		return self.x
+
+	def weight_sample(self):
+		y.clear()
+		w = 1
+		self.weight_update(true)
+		return self.y
+
+	def getTempVal(self):
+		return self.tempVal
+
