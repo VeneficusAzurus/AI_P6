@@ -18,10 +18,8 @@ class Node:
 		if p_refs is not None: #stupid workaround to prevent multiple objects from having the same dict
 			self.p_refs = p_refs
 			self.cpt = cpt
-			if abs(sum(cpt) - 1) > 0.01:
-				raise ValueError("CPT must sum to 1")
-			if len(cpt) != 2**len(p_refs):
-				raise ValueError("CPT must have length 2^len(p_refs)")
+#			if len(cpt) != 2**len(p_refs):
+#				raise ValueError("CPT must have length 2^len(p_refs)")
 			self.background = None #to avoid modification of class variable instead of object's variable.
 		else:
 			if background is None:
@@ -63,10 +61,10 @@ class Node:
 			raise ValueError("setVal function in Node can only take values None, 0, and 1, but was given {0}, a {1}".format(newval, type(newval)))
 
 	def setStatus(self, newstatus):
-		if newstatus in set({"t", "-", "f", "q"}):
+		if newstatus in {"t", "-", "f", "q"}:
 			self._status = newstatus
 		else:
-			raise ValueError('Set status given argument {0} not in {"t", "-", "f", "q"}'.format(newstatus))
+			raise ValueError('Set status given argument {0} not in {{"t", "-", "f", "q"}}'.format(newstatus))
 	def getStatus(self):
 		return self._status
 
