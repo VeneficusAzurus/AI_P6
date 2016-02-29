@@ -6,6 +6,11 @@ class Node:
 	cpt = None #should be a list of numbers between 0 and 1 with the property that sum(cpt) = 1
 	_status = ""
 	name = "" #a (hopefully unique) name for each node
+	x = {} #generate a random event
+	y = {} #generate a event that consistent with evidence
+	w = 1 #weight
+	tempVal = None #temp value used in event
+
 	#don't specify that both are none.
 	def __init__(self, background = None, p_refs = None, cpt = None, name = ""):
 
@@ -46,6 +51,8 @@ class Node:
 		
 		if reset_val: #the inference procedure cleans up after itself if you say reset_val = True
 			_val = None
+		tempVal = output
+		x.update({name: output})
 		return output
 
 	#takes None, 0, or 1. Returns nothing.
@@ -62,3 +69,50 @@ class Node:
 			raise ValueError('Set status given argument {0} not in {"t", "-", "f", "q"}'.format(newstatus))
 	def getStatus(self):
 		return self._status
+
+	def weight_update(self, reset_val = False):
+		output = None
+		if _val is not None:
+			output = _val
+		elif p_refs is not None and cpt is not None:
+			binstr = ''
+			for p in p_refs:
+				binstr.append(str(p.weight_Sample(reset_val = reset_val)))
+			index = int(binstr, 2) #convert it to binary
+			if _status == "t":
+				output = 1
+				w = w * (1-cpt[index])
+			elif _status == "f":
+				output = 0
+				w = w * cpt[index]
+			else:
+				output = (1 if random.random() >= cpt[index] else 0)
+		elif background is not None:
+			output = (1 if random.random() >= background else 0)
+		else:
+			raise TypeError("Improperly initialized Node has no parents and no background probability. getVal function cannot continue")
+		
+		if reset_val: #the inference procedure cleans up after itself if you say reset_val = True
+			_val = None
+		
+		tempVal = output
+		y.update({self.name: output})
+		return output
+
+	def getWeight(self):
+		return self.w
+
+	def prior_sample(self):
+		x.clear()
+		self.getVal(true)
+		return self.x
+
+	def weight_sample(self):
+		y.clear()
+		w = 1
+		self.weight_update(true)
+		return self.y
+
+	def getTempVal(self):
+		return self.tempVal
+
