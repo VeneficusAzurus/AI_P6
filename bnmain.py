@@ -1,5 +1,6 @@
 import sys
 from Node import Node
+from bnSample import *
 
 #follows method B as defined in the assignment
 def readfile(filename = "network_option_b.txt"):
@@ -44,6 +45,8 @@ def readqueryfile(filename):
 			return line.split(",")
 
 if __name__ == "__main__":
+	x = None #define query variable
+	evidence = {} #define evidence
 	if len(sys.argv) != 4:
 		print("usage: python3 bnmain.py <network_file> <query_file> <num_samples>\nwhere <network_file> and <query_file> should be filenames and <num_samples> should be an integer.\nAll arguments are mandatory.")
 		sys.exit(1)
@@ -58,7 +61,34 @@ if __name__ == "__main__":
 	for i in range(0, len(network)):
 		if querydata[i] == "?": #this was supposed to be fixed 4 days ago (as of Feb 29) but never was. It's unprofessional to incorrectly define your own format. 
 			querydata[i] = "q"
+			x = network[i]
 		querydata[i] = querydata[i].strip()
 		network[i].setStatus(querydata[i])
+		if querydata[i] == "t":
+			evidence.update({network[i].name: 1})
+		elif querydata[i] == "f":
+			evidence.update({network[i].name: 0})
 
 	num_samples = int(sys.argv[3])
+	'''
+	topology = []
+	print 'Topology'
+	topology = topological_sort(network)
+	print topology[0].name
+	for t in topology:
+		print t.name
+	'''
+	if x == None:
+		print("There is no query variable.")
+		sys.exit(1)
+	else:
+		rs_result = rejection_Sampling(x, evidence, network, num_samples)
+		lw_result = likelihood_Weighting(x, evidence, network, num_samples)
+		print "Probability Report----------"
+		print "Rejection Sampling:  %f" %rs_result
+		print "Likelihood Weighting Sampling: %f" %lw_result
+
+
+
+
+
