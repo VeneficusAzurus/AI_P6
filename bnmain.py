@@ -1,6 +1,7 @@
 import sys
 from Node import Node
 from bnSample import *
+import random
 
 #follows method B as defined in the assignment
 def readfile(filename = "network_option_b.txt"):
@@ -45,6 +46,7 @@ def readqueryfile(filename):
 			return line.split(",")
 
 if __name__ == "__main__":
+	random.seed()
 	x = None #define query variable
 	evidence = {} #define evidence
 	if len(sys.argv) != 4:
