@@ -86,9 +86,9 @@ if __name__ == "__main__":
 	else:
 		rs_result = rejection_Sampling(x, evidence, network, num_samples)
 		lw_result = likelihood_Weighting(x, evidence, network, num_samples)
-		print "Probability Report----------"
-		print "Rejection Sampling:  %f" %rs_result
-		print "Likelihood Weighting Sampling: %f" %lw_result
+		print ("Probability Report----------")
+		print ("Rejection Sampling:  %f" %rs_result)
+		print ("Likelihood Weighting Sampling: %f" %lw_result)
 
 
 
