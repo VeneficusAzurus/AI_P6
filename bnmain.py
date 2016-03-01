@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
 	#apply query data
 	for i in range(0, len(network)):
-		if querydata[i] == "?": #this was supposed to be fixed 4 days ago (as of Feb 29) but never was. It's unprofessional to incorrectly define your own format. 
+		if querydata[i] == "?":  
 			querydata[i] = "q"
 			x = network[i]
 		querydata[i] = querydata[i].strip()
