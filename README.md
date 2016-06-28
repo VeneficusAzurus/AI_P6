@@ -8,6 +8,6 @@ where <network_file> and <query_file> should be filenames and <num_samples> shou
 
 No external libraries were used. 
 
-We chose to answer option B of part 2 of the implementation. 
+We chose option B for part 2. 
 
 We chose to represent the Bayesian Network as a network of individual nodes. This was done mainly because it makes the architecture very simple, without sacrificing much power: it's very easy to recursively move through a directed graph that is modeled this way, and the nodes can even do some computations themselves. 
